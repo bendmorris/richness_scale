@@ -5,7 +5,7 @@ try: filename = sys.argv[1]
 except: filename = None
 
 smooth_radius = 2
-xlim = 20
+xlim = 10
 log = False
 
 with open('richness_correlates.pkl', 'rb') as pickle_file:
