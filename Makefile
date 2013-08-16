@@ -1,5 +1,8 @@
 all: mean_v_var.png
 
+clean: 
+	rm *.pkl *.png
+
 show: all
 	eog mean_v_var.png
 
