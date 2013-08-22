@@ -50,7 +50,7 @@ thresholds = [0] + sorted(set([clade._med_distance for clade in tree.find_elemen
                                if hasattr(clade, '_med_distance')]))
 print thresholds
 for threshold in thresholds:
-    if threshold > 100: break
+    if threshold > 50: break
     sys.stdout.write(str(threshold) + '...')
     sys.stdout.flush()
     color_clusters(tree, threshold=threshold, draw=False, 
