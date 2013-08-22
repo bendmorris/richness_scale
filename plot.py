@@ -26,16 +26,16 @@ def smooth(x, y):
         total_weight = sum(weights)
         ys.append(sum([y[n] * weights[n] / total_weight for n in range(len(x))]))
     return ys
-#plt.scatter(xs, y1, color="blue", marker='+', s=10)
-#plt.scatter(xs, y2, color="red", marker='+', s=10)
-#plt.scatter(xs, y3, color="purple", marker='+', s=10)
+plt.scatter(xs, y1, color="blue", marker='+', s=10)
+plt.scatter(xs, y2, color="red", marker='+', s=10)
+plt.scatter(xs, y3, color="purple", marker='+', s=10)
 plt.plot(xs, smooth(xs, y1), color="blue", label='mean', linewidth=2)
 plt.plot(xs, smooth(xs, y2), color="red", label='var', linewidth=2)
 plt.plot(xs, smooth(xs, y3), color="purple", label='shared', linewidth=2)
 
 plt.xlim(0, xlim)
 plt.ylabel('unique rsquared')
-plt.xlabel('clade percentile threshold')
+plt.xlabel('clade grouping percentile')
 plt.legend(loc='upper left')
 if log: plt.xscale('log')
 
