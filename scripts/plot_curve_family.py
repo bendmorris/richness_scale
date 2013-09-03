@@ -26,7 +26,6 @@ for route, values in data.items():
 plt.xlim(0, xlim)
 plt.ylabel('group richness')
 plt.xlabel('clade grouping percentile')
-plt.legend(loc='upper right')
 if log: plt.xscale('log')
 
 layout.cross_spines(ax=plt.gca())
