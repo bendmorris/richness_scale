@@ -2,15 +2,14 @@
 import Bio.Phylo as bp
 import csv
 import numpy as np
+import scipy.stats as s
 from geophy.cluster import color_clusters
 import statsmodels.api as sm
 import cPickle as pkl
 import sys
 
 
-#tree = bp.read('passeriformes.new', 'newick')
 tree = bp.read('data/bbs.new', 'newick')
-#tree = bp.read('jetz_birds.new', 'newick')
 tips = tree.get_terminals()
 all_species = {t.name: t for t in tips}
 
@@ -47,7 +46,8 @@ data = {}
 color_clusters(tree, threshold=0, draw=False, 
                all_colors=xrange(len(tips)),
                color_attr='group', min_clade_size=1)
-thresholds = [0] + sorted(set([clade._med_distance for clade in tree.find_elements()
+thresholds = [0] + sorted(set([s.percentileofscore(tree._distances, clade._med_distance) 
+                               for clade in tree.find_elements()
                                if hasattr(clade, '_med_distance')]))
 print thresholds
 for threshold in thresholds:

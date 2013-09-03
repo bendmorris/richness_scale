@@ -5,7 +5,9 @@ try: filename = sys.argv[1]
 except: filename = None
 import matplotlib
 if filename and filename.endswith('.svg'):
+    svg = True
     matplotlib.use('SVG')
+else: svg = False
 from mpltools import layout
 from mpltools import style
 style.use('ggplot')
@@ -14,13 +16,13 @@ import numpy as np
 
 
 smooth_radius = 1
-xlim = 20
+xlim = 18
 log = False
 
 with open('data/richness_correlates.pkl', 'rb') as pickle_file:
     data = pkl.load(pickle_file)
 
-xs = [x for x in sorted(data.keys()) if x <= xlim]
+xs = [x for x in sorted(data.keys()) if x <= xlim or not svg]
 y1 = []
 y2 = []
 y3 = []
@@ -36,6 +38,10 @@ def smooth(x, y):
         ys.append(sum([y[n] * weights[n] / total_weight for n in range(len(x))]))
     return ys
 
+
+plt.xlim(0, xlim)
+plt.ylim(0, round(max(y1+y2+y3) + 0.05, 1))
+
 a = plt.plot(xs, smooth(xs, y2), label='var', linewidth=2)
 plt.scatter(xs, y2, marker='+', s=10, color=a[0].get_markeredgecolor())
 a = plt.plot(xs, smooth(xs, y1), label='mean', linewidth=2)
@@ -43,8 +49,6 @@ plt.scatter(xs, y1, marker='+', s=10, color=a[0].get_markeredgecolor())
 a = plt.plot(xs, smooth(xs, y3), label='shared', linewidth=2)
 plt.scatter(xs, np.maximum(y3, 0), marker='+', s=10, color=a[0].get_markeredgecolor())
 
-plt.xlim(0, xlim)
-plt.ylim(0, round(max(y1+y2+y3) + 0.05, 1))
 plt.ylabel('unique rsquared')
 plt.xlabel('clade grouping percentile')
 plt.legend(loc='upper left')
