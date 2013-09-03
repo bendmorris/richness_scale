@@ -1,16 +1,25 @@
-all: mean_v_var.svg
+fignames=mean_v_var.svg
+figures=$(patsubst %, figures/%, $(fignames))
+
+
+.PHONY: all clean show
+
+all: $(figures)
 
 clean: 
-	rm *.pkl *.svg
+	rm -f data/*.pkl figures/*.svg
 
 show: all
-	eog mean_v_var.svg
+	eog figures/mean_v_var.svg
 
-bbs.csv: bbs.sqlite bbs_query.sql
-	python mk_csv.py > bbs.csv
+data/bbs.csv: scripts/mk_csv.py data/bbs.sqlite data/bbs_query.sql
+	python $< > $@
 
-richness_correlates.pkl: richness_correlates.py bbs.csv bbs.new env_data.csv
+data/richness_correlates.pkl: scripts/richness_correlates.py data/bbs.csv data/bbs.new data/env_data.csv
 	python $<
 
-mean_v_var.svg: plot.py richness_correlates.pkl
+figures:
+	mkdir figures
+
+figures/mean_v_var.svg: scripts/plot.py data/richness_correlates.pkl
 	python $< $@

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import Bio.Phylo as bp
 import csv
 import numpy as np
@@ -8,14 +9,14 @@ import sys
 
 
 #tree = bp.read('passeriformes.new', 'newick')
-tree = bp.read('bbs.new', 'newick')
+tree = bp.read('data/bbs.new', 'newick')
 #tree = bp.read('jetz_birds.new', 'newick')
 tips = tree.get_terminals()
 all_species = {t.name: t for t in tips}
 
 mean_data = {}
 var_data = {}
-with open('env_data.csv') as data_file:
+with open('data/env_data.csv') as data_file:
     reader = csv.reader(data_file)
     var_names = reader.next()
     for line in reader:
@@ -30,7 +31,7 @@ with open('env_data.csv') as data_file:
 
 routes = {}
 count_data_spp = set()
-with open('bbs.csv') as data_file:
+with open('data/bbs.csv') as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for route, lat, lon, genus, species, count in reader:
@@ -82,6 +83,6 @@ for threshold in thresholds:
         data[threshold] = results
     else: continue
 
-with open('richness_correlates.pkl', 'wb') as pickle_file:
+with open('data/richness_correlates.pkl', 'wb') as pickle_file:
     pkl.dump(data, pickle_file, -1)
 

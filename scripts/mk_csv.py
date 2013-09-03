@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 ''' 
 This script requires the bbs.sqlite database, which can be generated
 by the EcoData Retriever:
@@ -8,8 +9,8 @@ import sqlite3 as dbapi
 import csv
 import sys
 
-con = dbapi.connect('bbs.sqlite')
-query = open('bbs_query.sql').read()
+con = dbapi.connect('data/bbs.sqlite')
+query = open('data/bbs_query.sql').read()
 cur = con.cursor()
 cur.execute(query)
 

@@ -17,7 +17,7 @@ smooth_radius = 1
 xlim = 20
 log = False
 
-with open('richness_correlates.pkl', 'rb') as pickle_file:
+with open('data/richness_correlates.pkl', 'rb') as pickle_file:
     data = pkl.load(pickle_file)
 
 xs = [x for x in sorted(data.keys()) if x <= xlim]
