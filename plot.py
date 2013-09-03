@@ -1,10 +1,16 @@
 import cPickle as pkl
-import matplotlib.pyplot as plt
 import sys
 try: filename = sys.argv[1]
 except: filename = None
+import matplotlib
+if filename and filename.endswith('.svg'):
+    matplotlib.use('SVG')
+from mpltools import layout
+from mpltools import style
+style.use('ggplot')
+import matplotlib.pyplot as plt
 
-smooth_radius = 2
+smooth_radius = 1
 xlim = 10
 log = False
 
@@ -26,18 +32,21 @@ def smooth(x, y):
         total_weight = sum(weights)
         ys.append(sum([y[n] * weights[n] / total_weight for n in range(len(x))]))
     return ys
-plt.scatter(xs, y1, color="blue", marker='+', s=10)
-plt.scatter(xs, y2, color="red", marker='+', s=10)
-plt.scatter(xs, y3, color="purple", marker='+', s=10)
-plt.plot(xs, smooth(xs, y1), color="blue", label='mean', linewidth=2)
-plt.plot(xs, smooth(xs, y2), color="red", label='var', linewidth=2)
-plt.plot(xs, smooth(xs, y3), color="purple", label='shared', linewidth=2)
+
+a = plt.plot(xs, smooth(xs, y2), label='var', linewidth=2)
+plt.scatter(xs, y2, marker='+', s=10, color=a[0].get_markeredgecolor())
+a = plt.plot(xs, smooth(xs, y1), label='mean', linewidth=2)
+plt.scatter(xs, y1, marker='+', s=10, color=a[0].get_markeredgecolor())
+a = plt.plot(xs, smooth(xs, y3), label='shared', linewidth=2)
+plt.scatter(xs, y3, marker='+', s=10, color=a[0].get_markeredgecolor())
 
 plt.xlim(0, xlim)
 plt.ylabel('unique rsquared')
 plt.xlabel('clade grouping percentile')
 plt.legend(loc='upper left')
 if log: plt.xscale('log')
+
+layout.cross_spines(ax=plt.gca())
 
 if filename: plt.savefig(filename)
 else: plt.show()
