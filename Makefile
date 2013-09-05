@@ -8,10 +8,10 @@ figures=figures $(patsubst %, figures/%.$(figformat), $(fignames))
 all: $(figures)
 
 clean: 
-	rm -f data/*.pkl figures/*.svg
+	rm -rf data/*.pkl figures
 
 show: all
-	eog figures/mean_v_var.svg
+	eog figures/mean_v_var.$(figformat)
 
 data/bbs.csv: scripts/mk_csv.py data/bbs.sqlite data/bbs_query.sql
 	python $< > $@
