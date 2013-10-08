@@ -1,6 +1,9 @@
 fignames=mean_v_var curve_family
 figformat=png
-figures=figures $(patsubst %, figures/%.$(figformat), $(fignames))
+figures=$(patsubst figures/%.$(figformat), \
+          figures/bbs_%.$(figformat) \
+          figures/mcdb_%.$(figformat), \
+          $(patsubst %, figures/%.$(figformat), $(fignames)))
 
 
 .PHONY: all clean show
@@ -20,15 +23,16 @@ figures:
 	mkdir figures
 
 
-data/richness_correlates.pkl: scripts/richness_correlates.py data/bbs.csv data/bbs.new data/env_data.csv
-	python $<
+data/%_env_data.pkl: scripts/get_env_data.py data/%.csv
+	python $< $*
+data/%_richness_correlates.pkl: scripts/richness_correlates.py data/%.csv data/%.new data/%_env_data.pkl
+	python $< $*
 
-figures/mean_v_var.%: scripts/plot_mean_var.py data/richness_correlates.pkl
-	python $< $@
+figures/%_mean_v_var.$(figformat): scripts/plot_mean_var.py data/%_richness_correlates.pkl
+	python $< $* $@
 
+data/%_group_richness.pkl: scripts/group_richness.py data/bbs.csv data/bbs.new
+	python $< $*
 
-data/group_richness.pkl: scripts/group_richness.py data/bbs.csv data/bbs.new
-	python $<
-
-figures/curve_family.%: scripts/plot_curve_family.py data/group_richness.pkl
-	python $< $@
+figures/%_curve_family.$(figformat): scripts/plot_curve_family.py data/group_richness.pkl
+	python $< $* $@

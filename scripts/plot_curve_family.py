@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import cPickle as pkl
 import sys
-try: filename = sys.argv[1]
+dataset = sys.argv[1]
+try: filename = sys.argv[2]
 except: filename = None
 import matplotlib
 if filename and filename.endswith('.svg'):
@@ -16,7 +17,7 @@ import numpy as np
 xlim = 20
 log = False
 
-with open('data/group_richness.pkl', 'rb') as pickle_file:
+with open('data/%s_group_richness.pkl' % dataset, 'rb') as pickle_file:
     data = pkl.load(pickle_file)
 
 for route, values in data.items():

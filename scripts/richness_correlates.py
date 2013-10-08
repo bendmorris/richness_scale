@@ -7,30 +7,19 @@ from geophy.cluster import color_clusters
 import statsmodels.api as sm
 import cPickle as pkl
 import sys
+dataset = sys.argv[1]
 
 
-tree = bp.read('data/bbs.new', 'newick')
+tree = bp.read('data/%s.new' % dataset, 'newick')
 tips = tree.get_terminals()
 all_species = {t.name: t for t in tips}
 
-mean_data = {}
-var_data = {}
-with open('data/env_data.csv') as data_file:
-    reader = csv.reader(data_file)
-    var_names = reader.next()
-    for line in reader:
-        route = line[0]
-        mean_data[route] = [float(value) 
-                            for var_name, value in zip(var_names, line) 
-                            if '.mean' in var_name]
-        var_data[route] =  [float(value) 
-                            for var_name, value in zip(var_names, line) 
-                            if '.var' in var_name]
-                
+with open('data/%s_env_data.pkl' % dataset, 'r') as pickle_file:
+    mean_data, var_data = pkl.load(pickle_file)
 
 routes = {}
 count_data_spp = set()
-with open('data/bbs.csv') as data_file:
+with open('data/%s.csv' % dataset) as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for route, lat, lon, genus, species, count in reader:
@@ -72,9 +61,9 @@ for threshold in thresholds:
                 richness.add(all_species[sp].group)
         y.append(len(richness))
 
+    x3 = [[1]+a+b for (a,b) in zip(x1, x2)]
     x1 = [[1] + x for x in x1]
     x2 = [[1] + x for x in x2]
-    x3 = [[1]+a+b for (a,b) in zip(x1, x2)]
 
     results = [sm.OLS(y, x).fit().rsquared 
                for x in (x1, x2, x3)]
@@ -83,6 +72,6 @@ for threshold in thresholds:
         data[threshold] = results
     else: continue
 
-with open('data/richness_correlates.pkl', 'wb') as pickle_file:
+with open('data/%s_richness_correlates.pkl' % dataset, 'wb') as pickle_file:
     pkl.dump(data, pickle_file, -1)
 

@@ -7,18 +7,20 @@ from geophy.cluster import color_clusters
 import statsmodels.api as sm
 import cPickle as pkl
 import sys
+dataset = sys.argv[1]
 
 
-tree = bp.read('data/bbs.new', 'newick')
+tree = bp.read('data/%s.new' % dataset, 'newick')
 tips = tree.get_terminals()
 all_species = {t.name: t for t in tips}
 
 routes = {}
 count_data_spp = set()
-with open('data/bbs.csv') as data_file:
+with open('data/%s.csv' % dataset) as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for route, lat, lon, genus, species, count in reader:
+        route = (round(float(lat), 3), round(float(lon), 3))
         spname = '%s %s' % (genus, species)
         if not spname in all_species: continue
         count_data_spp.add(spname)

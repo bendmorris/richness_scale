@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import cPickle as pkl
 import sys
-try: filename = sys.argv[1]
+dataset = sys.argv[1]
+try: filename = sys.argv[2]
 except: filename = None
 import matplotlib
 if filename and filename.endswith('.svg'):
@@ -19,7 +20,7 @@ smooth_radius = 1
 xlim = 18
 log = False
 
-with open('data/richness_correlates.pkl', 'rb') as pickle_file:
+with open('data/%s_richness_correlates.pkl' % dataset, 'rb') as pickle_file:
     data = pkl.load(pickle_file)
 
 xs = [x for x in sorted(data.keys()) if x <= xlim or not svg]
