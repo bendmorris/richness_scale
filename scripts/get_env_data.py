@@ -12,8 +12,9 @@ import pybioclim
 
 
 # set of BIOCLIM variables to use for mean/heterogeneity models
-mean_vars = ['bio%s' % i for i in range(1, 3)]
-var_vars = ['bio%s' % i for i in range(1, 3)]
+mean_vars = ['bio%s' % i for i in range(1,20)] + ['ndvi']
+#mean_vars = ['bio%s' % i for i in (1,2,3,4,7,12,15)]
+var_vars = mean_vars
 
 routes = set()
 mean_data, var_data = {}, {}

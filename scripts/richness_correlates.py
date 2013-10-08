@@ -23,6 +23,7 @@ with open('data/%s.csv' % dataset) as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for route, lat, lon, genus, species, count in reader:
+        route = (round(float(lat), 3), round(float(lon), 3))
         spname = '%s %s' % (genus, species)
         if not spname in all_species: continue
         count_data_spp.add(spname)
@@ -52,6 +53,7 @@ for threshold in thresholds:
     y = []
     for route, spp in routes.iteritems():
         richness = set()
+        if None in mean_data[route] or None in var_data[route]: continue
         try:
             x1.append(mean_data[route])
             x2.append(var_data[route])
@@ -59,7 +61,7 @@ for threshold in thresholds:
         for sp in spp:
             if sp in all_species and hasattr(all_species[sp], 'group'):
                 richness.add(all_species[sp].group)
-        y.append(len(richness))
+        y.append(float(len(richness)))
 
     x3 = [[1]+a+b for (a,b) in zip(x1, x2)]
     x1 = [[1] + x for x in x1]
