@@ -7,6 +7,7 @@ figures=$(patsubst figures/%.$(figformat), \
 
 
 .PHONY: all clean show
+.PRECIOUS: data/%_env_data.pkl data/%_richness_correlates.pkl
 
 all: $(figures)
 
