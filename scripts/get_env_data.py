@@ -12,7 +12,7 @@ import pybioclim
 
 
 # set of BIOCLIM variables to use for mean/heterogeneity models
-mean_vars = ['bio%s' % i for i in range(1,20)] + ['ndvi']
+mean_vars = ['data/bio_%s' % i for i in range(1,20)] + ['data/ndvi', 'data/alt']
 #mean_vars = ['bio%s' % i for i in (1,2,3,4,7,12,15)]
 var_vars = mean_vars
 
@@ -29,6 +29,7 @@ with open('data/%s.csv' % dataset) as data_file:
 for route in routes:
     print len(mean_data), '/', len(routes),
     sys.stdout.write('\r')
+    sys.stdout.flush()
     mean_values = [pybioclim.get_values(var, [route])[0] for var in mean_vars]
     var_values = [pybioclim.get_spatial_variance(var, [route])[0] for var in var_vars]
 
