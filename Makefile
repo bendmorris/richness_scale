@@ -1,8 +1,8 @@
 fignames=mean_v_var curve_family
 figformat=png
-figures=$(patsubst figures/%.$(figformat), \
-          figures/bbs_%.$(figformat) \
-          figures/mcdb_%.$(figformat), \
+dataset=bbs
+figures=figures $(patsubst figures/%.$(figformat), \
+          figures/$(dataset)_%.$(figformat), \
           $(patsubst %, figures/%.$(figformat), $(fignames)))
 
 
@@ -14,11 +14,8 @@ all: $(figures)
 clean: 
 	rm -rf data/*.pkl figures
 
-show: all
-	eog figures/mean_v_var.$(figformat)
-
-data/bbs.csv: scripts/mk_csv.py data/bbs.sqlite data/bbs_query.sql
-	python $< > $@
+data/%.csv: scripts/mk_csv.py data/%.sqlite data/%_query.sql
+	python $< $* > $@
 
 figures:
 	mkdir figures
