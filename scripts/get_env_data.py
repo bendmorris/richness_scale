@@ -18,7 +18,7 @@ var_vars = mean_vars
 
 routes = set()
 mean_data, var_data = {}, {}
-with open('data/bbs.csv') as data_file:
+with open('data/%s.csv' % dataset) as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for route, lat, lon, genus, species, count in reader:

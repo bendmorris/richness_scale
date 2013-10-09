@@ -18,7 +18,7 @@ with open('data/%s_env_data.pkl' % dataset, 'r') as pickle_file:
     mean_data, var_data = pkl.load(pickle_file)
 
 routes = {}
-count_data_spp = set()
+#count_data_spp = set()
 with open('data/%s.csv' % dataset) as data_file:
     reader = csv.reader(data_file)
     reader.next()
@@ -26,8 +26,8 @@ with open('data/%s.csv' % dataset) as data_file:
         route = (round(float(lat), 3), round(float(lon), 3))
         spname = '%s %s' % (genus, species)
         if not spname in all_species: continue
-        count_data_spp.add(spname)
-        count = int(count)
+        #count_data_spp.add(spname)
+        #count = int(count)
         if not route in routes: routes[route] = set()
         routes[route].add(spname)
 

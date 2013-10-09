@@ -18,6 +18,7 @@ with sys.stdout as output_file:
     writer = csv.writer(output_file)
     writer.writerow(('route', 'lat','lon','genus','species','count'))
     for row in cur:
+        #if any([not x.strip() for x in row.split(',')]): continue
         try:
             lat = round(float(row[1]), 3)
             lon = round(float(row[2]), 3)
